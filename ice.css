@@ -1,0 +1,185 @@
+
+        body {
+            background-color: #FFF9F3;
+            color: #30231F;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .font-display {
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .font-handwritten {
+            font-family: 'Caveat', cursive;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFF4E6;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FF6B9D;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5A3427;
+        }
+
+        /* Glassmorphism Styling */
+        .glass-nav {
+            background: rgba(255, 249, 243, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+
+        /* Animated Blobs */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: 0;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Fly to cart item element */
+        .flying-item {
+            position: fixed;
+            z-index: 9999;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            pointer-events: none;
+            transition: all 0.85s cubic-bezier(0.19, 1, 0.22, 1);
+            box-shadow: 0 12px 30px rgba(255, 107, 157, 0.4);
+        }
+
+        /* Toast notification */
+        .toast {
+            transform: translateY(120px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Scroll Reveal Utility Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Reduced Motion Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }
+
+        #intro {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: #101014;
+            overflow: hidden;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        #intro video {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: contain;
+            background: #101014;
+        }
+
+        #skip-intro {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            padding: 11px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            border-radius: 30px;
+            background: rgba(20, 20, 30, 0.7);
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            backdrop-filter: blur(12px);
+            transition: transform 0.25s ease, background 0.25s ease;
+        }
+
+        #skip-intro:hover {
+            transform: scale(1.06);
+            background: #ff6b9d;
+        }
+
+        #main-site {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.9s ease;
+        }
+
+        #main-site.site-visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #intro.intro-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        @media (max-width: 600px) {
+            #intro video {
+                object-fit: contain;
+            }
+
+            #skip-intro {
+                top: 14px;
+                right: 14px;
+                padding: 9px 15px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #intro,
+            #main-site {
+                transition-duration: 0.01ms;
+            }
+        }
+/* Auth Modal Animations */
+#authModal.opacity-100 {
+    opacity: 1 !important;
+}
+
+#authCard.scale-100 {
+    transform: scale(1) !important;
+}

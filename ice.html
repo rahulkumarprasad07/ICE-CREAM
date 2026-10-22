@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCOOP — Happiness, One Scoop at a Time</title>
+    <link rel="stylesheet" href="ice.css">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'scoop-pink': '#FF6B9D',
+                        'scoop-cream': '#FFF4E6',
+                        'scoop-green': '#A8D5A2',
+                        'scoop-brown': '#5A3427',
+                        'scoop-purple': '#8B5CF6',
+                        'scoop-peach': '#FFB38A',
+                        'scoop-bg': '#FFF9F3',
+                        'scoop-dark': '#30231F',
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Fredoka', 'sans-serif'],
+                        handwritten: ['Caveat', 'cursive'],
+                    },
+                    animation: {
+                        'float': 'float 4s ease-in-out infinite',
+                        'float-slow': 'float 7s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 2.5s infinite',
+                        'spin-slow': 'spin 16s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-18px) rotate(2deg)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 25px rgba(255, 107, 157, 0.4)' },
+                            '50%': { boxShadow: '0 0 45px rgba(255, 107, 157, 0.85)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  
+</head>
+
+<body class="relative antialiased selection:bg-scoop-pink selection:text-white">
+
+    <!-- Scoopify animated intro -->
+    <div id="intro">
+        <video id="intro-video" autoplay muted playsinline preload="auto">
+            <source src="vid.mp4" type="video/mp4">
+        </video>
+        <button id="skip-intro" type="button">Skip Intro ↗</button>
+    </div>
+
+    <!-- Main Site Container -->
+    <div id="main-site">
+
+        <!-- CANVAS BACKGROUND SPRINKLES -->
+        <canvas id="sprinklesCanvas" class="fixed inset-0 pointer-events-none z-0 opacity-45"></canvas>
+
+        <!-- AMBIENT BLOBS -->
+        <div class="blob w-96 h-96 bg-scoop-pink top-10 -left-20 animate-pulse"></div>
+        <div class="blob w-96 h-96 bg-scoop-peach top-1/3 -right-20 animate-float-slow"></div>
+        <div class="blob w-80 h-80 bg-scoop-green bottom-10 left-10 animate-pulse"></div>
+
+        <!-- TOAST NOTIFICATION CONTAINER -->
+        <div id="toast" class="toast fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-scoop-dark text-white px-5 py-4 rounded-2xl shadow-2xl border border-scoop-pink/30">
+            <div class="bg-scoop-pink p-2.5 rounded-xl text-white">
+                <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+            </div>
+            <div>
+                <p id="toast-title" class="font-bold text-sm">Added to Cart!</p>
+                <p id="toast-message" class="text-xs text-scoop-cream/80">Item was added to your scoop bag.</p>
+            </div>
+        </div>
+
+        <!-- STICKY NAVBAR -->
+        <header id="navbar" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 glass-nav border-b border-scoop-pink/10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-20">
+                    <!-- LOGO -->
+                    <a href="#" class="flex items-center gap-3 group">
+                        <div class="w-12 h-12 bg-gradient-to-tr from-scoop-pink to-scoop-peach rounded-2xl flex items-center justify-center text-white shadow-lg shadow-scoop-pink/30 group-hover:scale-105 transition-transform duration-300">
+                            <i data-lucide="ice-cream" class="w-7 h-7"></i>
+                        </div>
+                        <div>
+                            <span class="font-display text-2xl font-bold tracking-tight text-scoop-brown block leading-none">SCOOPIFY</span>
+                            <span class="text-[10px] font-bold tracking-widest text-scoop-pink uppercase">Happiness Daily</span>
+                        </div>
+                    </a>
+
+                    <!-- DESKTOP NAV LINKS -->
+                    <nav class="hidden md:flex items-center gap-8 font-semibold text-sm text-scoop-dark">
+                        <a href="#hero" class="hover:text-scoop-pink transition-colors py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-scoop-pink hover:after:w-full after:transition-all">Home</a>
+                        <a href="#flavors" class="hover:text-scoop-pink transition-colors py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-scoop-pink hover:after:w-full after:transition-all">Flavors</a>
+                        <a href="#story" class="hover:text-scoop-pink transition-colors py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-scoop-pink hover:after:w-full after:transition-all">Our Story</a>
+                        <a href="#reviews" class="hover:text-scoop-pink transition-colors py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-scoop-pink hover:after:w-full after:transition-all">Reviews</a>
+                    </nav>
+
+                    <!-- ACTIONS -->
+                   <div class="flex items-center gap-3">
+    <!-- SIGN IN BUTTON (Swaps with user profile badge when logged in) -->
+    <div id="authContainer">
+        <button id="openAuthModalBtn" class="flex items-center gap-2 bg-white/90 hover:bg-scoop-cream px-4 py-2.5 rounded-2xl border border-scoop-pink/20 transition-all text-scoop-brown text-sm font-bold shadow-sm">
+            <i data-lucide="user" class="w-4 h-4 text-scoop-pink"></i>
+            <span>Sign In</span>
+        </button>
+    </div>
+
+    <!-- CART BUTTON -->
+    <button id="openCartBtn" class="relative p-3 bg-white/90 hover:bg-scoop-cream rounded-2xl border border-scoop-pink/20 transition-all hover:scale-105 active:scale-95 text-scoop-brown shadow-sm">
+        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+        <span id="cartBadge" class="absolute -top-1 -right-1 bg-scoop-pink text-white font-bold text-xs w-5 h-5 rounded-full flex items-center justify-center shadow-md scale-0 transition-transform duration-300">0</span>
+    </button>
+
+    <!-- ORDER NOW BUTTON -->
+    <a href="#flavors" class="hidden sm:inline-flex items-center gap-2 bg-gradient-to-r from-scoop-pink to-scoop-peach text-white font-bold text-sm px-6 py-3 rounded-2xl shadow-lg shadow-scoop-pink/30 hover:shadow-scoop-pink/50 hover:scale-105 active:scale-95 transition-all">
+        <span>Order Now</span>
+        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+    </a>
+
+    <!-- MOBILE MENU TOGGLE -->
+    <button id="mobileMenuBtn" class="md:hidden p-3 bg-white/90 rounded-2xl border border-scoop-pink/20 text-scoop-brown">
+        <i data-lucide="menu" class="w-6 h-6"></i>
+    </button>
+</div>
+                </div>
+            </div>
+
+            <!-- MOBILE MENU OVERLAY -->
+            <div id="mobileMenu" class="hidden md:hidden bg-scoop-bg/95 border-b border-scoop-pink/20 px-6 py-6 space-y-4">
+                <a href="#hero" class="block font-bold text-lg text-scoop-dark hover:text-scoop-pink mobile-nav-link">Home</a>
+                <a href="#flavors" class="block font-bold text-lg text-scoop-dark hover:text-scoop-pink mobile-nav-link">Flavors</a>
+                <a href="#story" class="block font-bold text-lg text-scoop-dark hover:text-scoop-pink mobile-nav-link">Our Story</a>
+                <a href="#reviews" class="block font-bold text-lg text-scoop-dark hover:text-scoop-pink mobile-nav-link">Reviews</a>
+                <a href="#flavors" class="inline-block w-full text-center bg-scoop-pink text-white font-bold py-3.5 rounded-xl shadow-md">Order Now</a>
+            </div>
+        </header>
+
+       <!-- HERO SECTION -->
+<section id="hero" class="relative min-h-screen lg:h-screen lg:min-h-0 pt-24 pb-8 flex items-center justify-center overflow-hidden z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
+            
+            <!-- HERO TEXT CONTENT -->
+            <div class="lg:col-span-7 space-y-5 text-center lg:text-left reveal">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-scoop-pink/10 border border-scoop-pink/30 text-scoop-pink font-bold text-xs sm:text-sm animate-bounce">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i>
+                    <span>100% Artisanal & Fresh Daily</span>
+                </div>
+
+                <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold text-scoop-brown leading-tight tracking-tight">
+                    Life Is Better With <br class="hidden sm:inline"/>
+                    <span class="bg-gradient-to-r from-scoop-pink via-scoop-purple to-scoop-peach bg-clip-text text-transparent">Ice Cream.</span>
+                </h1>
+
+                <p class="text-base sm:text-lg text-scoop-dark/80 max-w-xl mx-auto lg:mx-0 font-medium leading-relaxed">
+                    Handcrafted scoops. Extraordinary flavors. Little moments of happiness served fresh in crispy waffle cones every single day.
+                </p>
+
+                <!-- BUTTONS -->
+                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-1">
+                    <a href="#flavors" class="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-scoop-pink hover:bg-scoop-pink/90 text-white font-extrabold text-sm shadow-xl shadow-scoop-pink/40 hover:shadow-scoop-pink/60 hover:-translate-y-0.5 active:translate-y-0 transition-all text-center flex items-center justify-center gap-2 animate-pulse-glow">
+                        <i data-lucide="utensils" class="w-4 h-4"></i>
+                        <span>Explore Flavors</span>
+                    </a>
+
+                    <a href="#story" class="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-white hover:bg-scoop-cream border-2 border-scoop-brown/15 text-scoop-brown font-extrabold text-sm hover:-translate-y-0.5 active:translate-y-0 transition-all text-center flex items-center justify-center gap-2 shadow-sm">
+                        <i data-lucide="heart" class="w-4 h-4 text-scoop-pink"></i>
+                        <span>Discover Our Story</span>
+                    </a>
+                </div>
+
+                <!-- HERO STATS -->
+                <div class="pt-6 grid grid-cols-3 gap-4 border-t border-scoop-brown/10 max-w-lg mx-auto lg:mx-0">
+                    <div>
+                        <p class="font-display text-2xl sm:text-3xl font-bold text-scoop-pink">24+</p>
+                        <p class="text-xs font-semibold text-scoop-dark/70">Unique Flavors</p>
+                    </div>
+                    <div>
+                        <p class="font-display text-2xl sm:text-3xl font-bold text-scoop-purple">100%</p>
+                        <p class="text-xs font-semibold text-scoop-dark/70">Organic Milk</p>
+                    </div>
+                    <div>
+                        <p class="font-display text-2xl sm:text-3xl font-bold text-scoop-green">50k+</p>
+                        <p class="text-xs font-semibold text-scoop-dark/70">Happy Scoopers</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HERO DESSERT PHOTO -->
+            <div class="lg:col-span-5 relative flex items-center justify-center">
+                <div class="relative w-full max-w-md lg:max-w-full rounded-[2rem] border-[8px] border-white shadow-2xl shadow-scoop-brown/20 overflow-hidden bg-white transform hover:-translate-y-1 transition-transform duration-500">
+                    <img
+                        src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=1000&q=80"
+                        alt="Delicious Belgian Dark Cacao Sundae Bowl"
+                        class="block w-full h-auto max-h-[60vh] sm:max-h-[500px] object-cover"
+                    >
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+        <!-- SIGNATURE FLAVORS (FILTERABLE MENU) -->
+        <section id="flavors" class="py-24 relative z-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- SECTION HEADER -->
+                <div class="text-center max-w-3xl mx-auto mb-12 space-y-4 reveal">
+                    <span class="font-handwritten text-3xl text-scoop-pink font-bold">Made Fresh Every Morning</span>
+                    <h2 class="font-display text-4xl sm:text-5xl font-extrabold text-scoop-brown">Explore Signature Flavors</h2>
+                    <p class="text-scoop-dark/70 font-medium">Crafted with 100% natural ingredients, organic milk, and zero artificial preservatives.</p>
+                </div>
+
+                <!-- SEARCH AND FILTER BAR -->
+                <div class="mb-12 flex flex-col md:flex-row items-center justify-between gap-6 bg-white/80 p-4 rounded-3xl border border-scoop-pink/15 shadow-sm reveal">
+                    <!-- CATEGORY PILLS -->
+                    <div class="flex flex-wrap items-center justify-center gap-2 w-full md:w-auto" id="filterContainer">
+                        <button data-category="all" class="filter-btn active px-5 py-2.5 rounded-2xl font-bold text-sm transition-all bg-scoop-pink text-white shadow-md">All Scoops</button>
+                        <button data-category="chocolate" class="filter-btn px-5 py-2.5 rounded-2xl font-bold text-sm transition-all bg-white text-scoop-dark hover:bg-scoop-cream border border-scoop-brown/10">Chocolate</button>
+                        <button data-category="fruity" class="filter-btn px-5 py-2.5 rounded-2xl font-bold text-sm transition-all bg-white text-scoop-dark hover:bg-scoop-cream border border-scoop-brown/10">Fruity</button>
+                        <button data-category="classic" class="filter-btn px-5 py-2.5 rounded-2xl font-bold text-sm transition-all bg-white text-scoop-dark hover:bg-scoop-cream border border-scoop-brown/10">Classic</button>
+                        <button data-category="premium" class="filter-btn px-5 py-2.5 rounded-2xl font-bold text-sm transition-all bg-white text-scoop-dark hover:bg-scoop-cream border border-scoop-brown/10">Premium</button>
+                    </div>
+
+                    <!-- SEARCH INPUT -->
+                    <div class="relative w-full md:w-72">
+                        <i data-lucide="search" class="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-scoop-dark/40"></i>
+                        <input type="text" id="searchInput" placeholder="Search flavor..." class="w-full pl-11 pr-4 py-2.5 rounded-2xl bg-white border border-scoop-brown/15 focus:outline-none focus:border-scoop-pink text-sm font-semibold transition-all shadow-inner">
+                    </div>
+                </div>
+
+                <!-- PRODUCT GRID -->
+                <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Dynamically Populated via JS -->
+                </div>
+
+                <!-- EMPTY SEARCH FALLBACK -->
+                <div id="noResults" class="hidden text-center py-16 space-y-4">
+                    <div class="text-5xl">🍦</div>
+                    <h3 class="font-display text-2xl font-bold text-scoop-brown">No scoops found</h3>
+                    <p class="text-scoop-dark/60 text-sm">Try searching for something else like "Chocolate" or "Berry".</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- OUR STORY SECTION -->
+        <section id="story" class="py-24 bg-gradient-to-b from-scoop-cream/60 to-white/80 relative z-10 border-y border-scoop-pink/10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    
+                    <!-- IMAGE COLLAGE -->
+                    <div class="lg:col-span-6 relative reveal">
+                        <div class="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
+                            <img src="https://images.unsplash.com/photo-1570197788417-0e82375c9371?auto=format&fit=crop&w=1000&q=80" alt="Scoop Parlor" class="w-full h-[420px] object-cover hover:scale-105 transition-transform duration-700">
+                        </div>
+                        <!-- Secondary Floating Image -->
+                        <div class="absolute -bottom-8 -right-4 sm:right-6 z-20 w-48 sm:w-56 p-3 bg-white rounded-3xl shadow-xl border-2 border-scoop-peach/30 transform rotate-3 hidden sm:block">
+                            <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80" alt="Fresh Ice Cream" class="w-full h-36 object-cover rounded-2xl mb-2">
+                            <p class="font-handwritten text-xl font-bold text-center text-scoop-pink">Handcrafted with joy!</p>
+                        </div>
+                        <div class="absolute -top-6 -left-6 w-24 h-24 bg-scoop-green/30 rounded-full blur-xl"></div>
+                    </div>
+
+                    <!-- STORY CONTENT -->
+                    <div class="lg:col-span-6 space-y-6 reveal">
+                        <span class="font-handwritten text-3xl text-scoop-pink font-bold">Our Sweet Journey</span>
+                        <h2 class="font-display text-4xl sm:text-5xl font-extrabold text-scoop-brown leading-tight">
+                            Crafting Pure Joy, <br/>
+                            Scoop by Loving Scoopify.
+                        </h2>
+                        <p class="text-scoop-dark/80 text-base leading-relaxed">
+                            Started in 2021 in a cozy corner kitchen, <strong>SCOOP</strong> was born out of a simple passion: to make ice cream that tastes like pure childhood happiness. We source local organic dairy, churn in small batches daily, and infuse real fruits, rich cocoa, and premium roasted nuts.
+                        </p>
+
+                        <!-- FEATURE HIGHLIGHTS -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+                            <div class="p-4 rounded-2xl bg-white border border-scoop-pink/15 shadow-sm text-center hover:-translate-y-1 transition-transform">
+                                <div class="w-10 h-10 mx-auto mb-2 bg-scoop-pink/10 rounded-xl flex items-center justify-center text-scoop-pink">
+                                    <i data-lucide="leaf" class="w-5 h-5"></i>
+                                </div>
+                                <p class="font-bold text-sm text-scoop-brown">Fresh Ingredients</p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-white border border-scoop-peach/15 shadow-sm text-center hover:-translate-y-1 transition-transform">
+                                <div class="w-10 h-10 mx-auto mb-2 bg-scoop-peach/10 rounded-xl flex items-center justify-center text-scoop-peach">
+                                    <i data-lucide="heart" class="w-5 h-5"></i>
+                                </div>
+                                <p class="font-bold text-sm text-scoop-brown">Made With Love</p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-white border border-scoop-green/15 shadow-sm text-center hover:-translate-y-1 transition-transform">
+                                <div class="w-10 h-10 mx-auto mb-2 bg-scoop-green/10 rounded-xl flex items-center justify-center text-scoop-green">
+                                    <i data-lucide="smile" class="w-5 h-5"></i>
+                                </div>
+                                <p class="font-bold text-sm text-scoop-brown">Pure Happiness</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- CUSTOMER LOVE (TESTIMONIALS) -->
+        <section id="reviews" class="py-24 relative z-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16 space-y-3 reveal">
+                    <span class="font-handwritten text-3xl text-scoop-pink font-bold">Scoopify Fans</span>
+                    <h2 class="font-display text-4xl sm:text-5xl font-extrabold text-scoop-brown">Customer Love</h2>
+                    <p class="text-scoop-dark/70 font-medium">Read feedback from our ice cream enthusiasts across town!</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- TESTIMONIAL 1 -->
+                    <div class="p-8 rounded-3xl bg-white border border-scoop-pink/15 shadow-xl hover:-translate-y-2 transition-all duration-300 relative reveal">
+                        <div class="flex items-center gap-1 text-amber-400 mb-4">
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                        </div>
+                        <p class="text-scoop-dark/80 text-sm leading-relaxed mb-6 font-medium">
+                            "The Pistachio Paradise is unlike anything I've tasted before! Real pistachio chunks and incredibly creamy texture. Absolute perfection!"
+                        </p>
+                        <div class="flex items-center gap-3">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Ananya" class="w-12 h-12 rounded-full object-cover ring-2 ring-scoop-pink/30">
+                            <div>
+                                <p class="font-bold text-sm text-scoop-brown">Ananya Sharma</p>
+                                <p class="text-xs text-scoop-dark/60">Verified Buyer</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TESTIMONIAL 2 -->
+                    <div class="p-8 rounded-3xl bg-white border border-scoop-pink/15 shadow-xl hover:-translate-y-2 transition-all duration-300 relative reveal">
+                        <div class="flex items-center gap-1 text-amber-400 mb-4">
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                        </div>
+                        <p class="text-scoop-dark/80 text-sm leading-relaxed mb-6 font-medium">
+                            "Strawberry Dream tastes like real fresh strawberries harvested from a sunlit farm. Plus, the waffle cone crunch is unmatched!"
+                        </p>
+                        <div class="flex items-center gap-3">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="Rohan" class="w-12 h-12 rounded-full object-cover ring-2 ring-scoop-pink/30">
+                            <div>
+                                <p class="font-bold text-sm text-scoop-brown">Rohan Mehta</p>
+                                <p class="text-xs text-scoop-dark/60">Dessert Enthusiast</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TESTIMONIAL 3 -->
+                    <div class="p-8 rounded-3xl bg-white border border-scoop-pink/15 shadow-xl hover:-translate-y-2 transition-all duration-300 relative reveal">
+                        <div class="flex items-center gap-1 text-amber-400 mb-4">
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                        </div>
+                        <p class="text-scoop-dark/80 text-sm leading-relaxed mb-6 font-medium">
+                            "Fast delivery, adorable packaging, and the Mango Magic scoop took me right back to summer vacations. SCOOP is our family's favorite treat!"
+                        </p>
+                        <div class="flex items-center gap-3">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" alt="Pooja" class="w-12 h-12 rounded-full object-cover ring-2 ring-scoop-pink/30">
+                            <div>
+                                <p class="font-bold text-sm text-scoop-brown">Pooja Kapoor</p>
+                                <p class="text-xs text-scoop-dark/60">Regular Customer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CALL TO ACTION -->
+        <section class="py-20 relative z-10 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="relative rounded-3xl bg-gradient-to-r from-scoop-pink via-rose-400 to-scoop-peach p-10 sm:p-16 text-white text-center shadow-2xl overflow-hidden reveal">
+                    <div class="relative z-10 max-w-2xl mx-auto space-y-6">
+                        <span class="font-handwritten text-4xl text-scoop-cream font-bold">Craving Something Sweet?</span>
+                        <h2 class="font-display text-4xl sm:text-6xl font-extrabold leading-tight">Your Next Favorite Scoop Is Waiting.</h2>
+                        <p class="text-white/90 text-lg font-medium">Order online for quick parlor pickup or ice-chilled doorstep delivery within 30 minutes.</p>
+                        <div class="pt-4">
+                            <a href="#flavors" class="inline-flex items-center gap-3 px-8 py-4 bg-white text-scoop-pink font-extrabold text-base rounded-2xl shadow-xl hover:bg-scoop-cream hover:scale-105 active:scale-95 transition-all">
+                                <span>Explore the Full Menu</span>
+                                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="bg-scoop-dark text-scoop-cream pt-16 pb-12 relative z-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-12 pb-12 border-b border-white/10">
+                    
+                    <!-- BRAND INFO -->
+                    <div class="md:col-span-4 space-y-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-10 h-10 bg-scoop-pink rounded-xl flex items-center justify-center text-white">
+                                <i data-lucide="ice-cream" class="w-6 h-6"></i>
+                            </div>
+                            <span class="font-display text-2xl font-bold tracking-tight text-white">SCOOPIFY</span>
+                        </div>
+                        <p class="text-sm text-scoop-cream/70 leading-relaxed max-w-sm">
+                            Crafting handcrafted ice creams and gelato with organic milk, real fruits, and a whole lot of love since 2021.
+                        </p>
+                    </div>
+
+                    <!-- QUICK LINKS -->
+                    <div class="md:col-span-2 space-y-3">
+                        <p class="font-bold text-white text-base font-display">Navigation</p>
+                        <ul class="space-y-2 text-sm text-scoop-cream/70">
+                            <li><a href="#hero" class="hover:text-scoop-pink transition-colors">Home</a></li>
+                            <li><a href="#flavors" class="hover:text-scoop-pink transition-colors">Flavors</a></li>
+                            <li><a href="#story" class="hover:text-scoop-pink transition-colors">Our Story</a></li>
+                            <li><a href="#reviews" class="hover:text-scoop-pink transition-colors">Reviews</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- OPENING HOURS -->
+                    <div class="md:col-span-3 space-y-3">
+                        <p class="font-bold text-white text-base font-display">Parlor Hours</p>
+                        <div class="text-sm text-scoop-cream/70 space-y-1">
+                            <p>Mon – Thu: 11:00 AM – 10:30 PM</p>
+                            <p>Fri – Sun: 11:00 AM – 11:30 PM</p>
+                            <p class="text-scoop-pink font-bold mt-2">Delivery active 7 days a week!</p>
+                        </div>
+                    </div>
+
+                    <!-- SOCIALS -->
+                    <div class="md:col-span-3 space-y-3">
+                        <p class="font-bold text-white text-base font-display">Connect With Us</p>
+                        <p class="text-sm text-scoop-cream/70">Follow @scoopify.happiness for daily specials and secret menu drops!</p>
+                        <div class="flex items-center gap-3 pt-2">
+                            <a href="#" class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-scoop-pink hover:text-white transition-all">
+                                <i data-lucide="instagram" class="w-5 h-5"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-scoop-pink hover:text-white transition-all">
+                                <i data-lucide="facebook" class="w-5 h-5"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-scoop-pink hover:text-white transition-all">
+                                <i data-lucide="twitter" class="w-5 h-5"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-scoop-cream/50 gap-4">
+                    <p>&copy; 2026 SCOOPIFY Ice Cream Parlor. All rights reserved.</p>
+                    <div class="flex gap-6">
+                        <a href="#" class="hover:underline">Privacy Policy</a>
+                        <a href="#" class="hover:underline">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- CART SIDEBAR DRAWER -->
+        <div id="cartDrawer" class="fixed inset-0 z-50 pointer-events-none opacity-0 transition-opacity duration-300">
+            <!-- BACKDROP -->
+            <div id="cartBackdrop" class="absolute inset-0 bg-scoop-dark/60 backdrop-blur-sm transition-opacity"></div>
+            
+            <!-- DRAWER PANEL -->
+            <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+                <div id="cartPanel" class="w-screen max-w-md bg-scoop-bg shadow-2xl flex flex-col translate-x-full transition-transform duration-300 ease-out border-l border-scoop-pink/20">
+                    
+                    <!-- DRAWER HEADER -->
+                    <div class="p-6 bg-white border-b border-scoop-pink/15 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 bg-scoop-pink/10 rounded-xl text-scoop-pink">
+                                <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="font-display text-xl font-bold text-scoop-brown">Your Scoop Bag</h3>
+                        </div>
+                        <button id="closeCartBtn" class="p-2 rounded-xl text-scoop-dark/60 hover:text-scoop-brown hover:bg-scoop-cream transition-all">
+                            <i data-lucide="x" class="w-6 h-6"></i>
+                        </button>
+                    </div>
+
+                    <!-- CART ITEMS LIST -->
+                    <div id="cartItemsList" class="flex-1 overflow-y-auto p-6 space-y-4">
+                        <!-- Populated by JS -->
+                    </div>
+
+                    <!-- CART FOOTER -->
+                    <div class="p-6 bg-white border-t border-scoop-pink/15 space-y-4">
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm text-scoop-dark/70">
+                                <span>Subtotal</span>
+                                <span id="cartSubtotal" class="font-semibold text-scoop-dark">$0.00</span>
+                            </div>
+                            <div class="flex justify-between text-sm text-scoop-dark/70">
+                                <span>Ice-Cold Delivery</span>
+                                <span class="font-semibold text-scoop-green">FREE</span>
+                            </div>
+                            <div class="flex justify-between text-lg font-bold text-scoop-brown pt-2 border-t border-scoop-brown/10">
+                                <span>Total</span>
+                                <span id="cartTotal" class="text-scoop-pink">$0.00</span>
+                            </div>
+                        </div>
+
+                        <button id="checkoutBtn" class="w-full py-4 rounded-2xl bg-gradient-to-r from-scoop-pink to-scoop-peach text-white font-extrabold text-base shadow-lg shadow-scoop-pink/30 hover:shadow-scoop-pink/50 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                            <span>Proceed to Checkout</span>
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- AUTH MODAL (SIGN IN / SIGN UP) -->
+<div id="authModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none opacity-0 transition-opacity duration-300">
+    <!-- BACKDROP -->
+    <div id="authBackdrop" class="absolute inset-0 bg-scoop-dark/60 backdrop-blur-sm"></div>
+
+    <!-- MODAL CARD -->
+    <div id="authCard" class="relative z-10 w-full max-w-md bg-white rounded-3xl p-8 shadow-2xl border border-scoop-pink/20 scale-95 transition-transform duration-300 pointer-events-auto">
+        <!-- CLOSE BUTTON -->
+        <button id="closeAuthModalBtn" class="absolute top-5 right-5 p-2 rounded-xl text-scoop-dark/60 hover:text-scoop-brown hover:bg-scoop-cream transition-all">
+            <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+
+        <!-- HEADER -->
+        <div class="text-center mb-6 space-y-1">
+            <div class="w-12 h-12 mx-auto bg-scoop-pink/10 rounded-2xl flex items-center justify-center text-scoop-pink mb-3">
+                <i data-lucide="ice-cream" class="w-6 h-6"></i>
+            </div>
+            <h3 id="authModalTitle" class="font-display text-2xl font-bold text-scoop-brown">Welcome Back!</h3>
+            <p id="authModalSubtitle" class="text-xs text-scoop-dark/60 font-medium">Sign in to save your favorite scoops and checkout faster.</p>
+        </div>
+
+        <!-- FORM -->
+        <form id="authForm" class="space-y-4">
+            <div id="nameFieldGroup" class="hidden space-y-1">
+                <label class="block text-xs font-bold text-scoop-brown uppercase tracking-wider">Full Name</label>
+                <div class="relative">
+                    <i data-lucide="user" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-scoop-dark/40"></i>
+                    <input type="text" id="authName" placeholder="John Doe" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-scoop-brown/20 focus:outline-none focus:border-scoop-pink text-sm font-semibold">
+                </div>
+            </div>
+
+            <div class="space-y-1">
+                <label class="block text-xs font-bold text-scoop-brown uppercase tracking-wider">Email Address</label>
+                <div class="relative">
+                    <i data-lucide="mail" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-scoop-dark/40"></i>
+                    <input type="email" id="authEmail" required placeholder="you@example.com" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-scoop-brown/20 focus:outline-none focus:border-scoop-pink text-sm font-semibold">
+                </div>
+            </div>
+
+            <div class="space-y-1">
+                <label class="block text-xs font-bold text-scoop-brown uppercase tracking-wider">Password</label>
+                <div class="relative">
+                    <i data-lucide="lock" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-scoop-dark/40"></i>
+                    <input type="password" id="authPassword" required placeholder="••••••••" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-scoop-brown/20 focus:outline-none focus:border-scoop-pink text-sm font-semibold">
+                </div>
+            </div>
+
+            <button type="submit" id="authSubmitBtn" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-scoop-pink to-scoop-peach text-white font-extrabold text-sm shadow-lg shadow-scoop-pink/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                Sign In
+            </button>
+        </form>
+
+        <!-- TOGGLE BUTTON -->
+        <div class="mt-6 text-center text-xs text-scoop-dark/70">
+            <span id="authToggleText">Don't have an account?</span>
+            <button id="authToggleBtn" class="font-bold text-scoop-pink hover:underline ml-1">Create One</button>
+        </div>
+    </div>
+</div>
+
+  <script src="ice.js"></script>
+</body>
+</html>
