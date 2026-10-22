@@ -183,3 +183,42 @@
 #authCard.scale-100 {
     transform: scale(1) !important;
 }
+/* Responsive Intro Overlay & Safe-Area Adjustments */
+#intro {
+  height: 100dvh; /* Dynamic viewport height for mobile browser bars */
+}
+
+#skip-intro {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 51;
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #5a3427;
+  font-weight: 700;
+  font-size: 0.875rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 107, 157, 0.3);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+#skip-intro:hover {
+  background-color: #fff4e6;
+  transform: scale(1.05);
+}
+
+#skip-intro:active {
+  transform: scale(0.95);
+}
+
+@supports (padding: env(safe-area-inset-top)) {
+  #skip-intro {
+    top: calc(1.25rem + env(safe-area-inset-top));
+    right: calc(1.25rem + env(safe-area-inset-right));
+  }
+}

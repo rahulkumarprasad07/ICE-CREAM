@@ -63,14 +63,14 @@
 
 <body class="relative antialiased selection:bg-scoop-pink selection:text-white">
 
-    <!-- Scoopify animated intro -->
-    <div id="intro">
-        <video id="intro-video" autoplay muted playsinline preload="auto">
-            <source src="vid.mp4" type="video/mp4">
-        </video>
-        <button id="skip-intro" type="button">Skip Intro ↗</button>
-    </div>
 
+<!-- Scoopify animated intro -->
+<div id="intro" class="fixed inset-0 z-50 bg-scoop-dark flex items-center justify-center overflow-hidden w-screen h-screen">
+    <video id="intro-video" class="w-full h-full object-contain object-center" autoplay muted playsinline preload="auto">
+        <source src="vid.mp4" type="video/mp4">
+    </video>
+    <button id="skip-intro" type="button">Skip Intro ↗</button>
+</div>
     <!-- Main Site Container -->
     <div id="main-site">
 
